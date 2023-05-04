@@ -1,0 +1,27 @@
+.NaviBarButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    width: 20vw;
+    height: 20vw;
+    max-width: 75px;
+    max-height: 75px;
+  }
+  
+  .PostButton {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    width: 20vw;
+    height: 20vw;
+    max-width: 75px;
+    max-height: 75px;
+  }
