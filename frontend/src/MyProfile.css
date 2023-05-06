@@ -1,0 +1,76 @@
+.posts-container{
+    margin-top: 5vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+.posts-container h1{
+    text-align: center;
+    margin-bottom: 40px;
+}
+.post {
+    background-color: #c0bae6;
+    width: 90vw;
+    height: 10vw;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 5px;
+  }
+  
+.h1{
+    text-align: center;
+    justify-content: center;
+}
+  .post p {
+    margin: 0;
+    position: absolute;
+    bottom: 5px; /* add bottom property to move elements to the bottom */
+    left: 10px; /* add left property to move elements to the left */
+  }
+
+  .post button {
+    width: 100px;
+    height: 30px;
+    position: absolute;
+    bottom: 0; /* add bottom property to move elements to the bottom */
+    right: 10px;
+}
+
+.delete {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 32px;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .delete::before,
+  .delete::after {
+    content: "";
+    position: absolute;
+    top: 25%;
+    left: 85%;
+    width: 25%;
+    height: 4px;
+    background-color: #eef0df;
+    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 2px;
+  }
+  
+  .delete::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+.delete:hover::before,
+.delete:hover::after {
+  background-color: #fff;
+}
+
+.posts-container h2{
+    margin-left: 75vw;
+}
+  
