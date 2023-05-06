@@ -53,7 +53,7 @@ function MyFeed() {
       <button className = "like" onClick={handleLikeClick}>{likeCount}</button>
       <div className='follow'>
       <h3>{username}</h3>
-      <button onclick={handleFollow}>Follow</button>
+      <button onClick={handleFollow}>Follow</button>
       </div>
       <h2 className='feed'>{postContent}</h2>
       <button className = "dislike" onClick={handleDislikeClick}>{dislikeCount}</button>

@@ -18,8 +18,6 @@ function MyProfile() {
       .catch(error => console.error(error));
   }, []);
 
-  
-
   const handleDelete = (postId) => {
     fetch('/profile/post/delete', {
       method: 'PUT',

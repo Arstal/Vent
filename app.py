@@ -23,9 +23,9 @@ class Following(UserMixin, db.Model):
     User1 = db.Column(db.String(50))
     user2 = db.Column(db.String(50))
 
-    def init(self, user1, user2):
+    def __init__(self, user1, user2):
         self.User1 = user1 
-        self.User2 = user2
+        self.user2 = user2
 
 
 
@@ -208,19 +208,21 @@ def dislike():
 @login_required
 def follow():
     if request.method == "PUT":
+
         postid = session.get("postNumber")
-        actualpost = UserPost.query.filter_by(id=int(postid)).first()
+
+        actualpost = UserPost.query.filter_by(id = int(postid)).first()
 
         info = session.get("user")
         userid = info["id"]
 
-        newfollow = Following(userid, actualpost.user_id)
+        newfollow = Following(str(userid), str(actualpost.user_id))
         db.session.add(newfollow)
         db.session.commit()
 
-        followeduser = User.query.filter_by(id=int(actualpost.user_id)).first()
+        followedusername = User.query.filter_by(id = int(actualpost.user_id)).first()
 
-        return {"setUsername": followeduser.name}
+        return {"setUsername" : followedusername.name}
 
 
 @app.route('/Post', methods=['POST'] )
