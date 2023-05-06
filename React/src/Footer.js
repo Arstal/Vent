@@ -1,12 +1,9 @@
 import React, {useState} from "react";
 import PostForm from "./PostForm.js";
-import NaviBarIcon from "./assets/NaviBarIcon.png";
-import PostFormIcon from "./assets/PostFormIcon.png";
 import MyFeed from './MyFeed';
 import MyProfile from './MyProfile';
 import Setting from './Setting';
 import NaviBar from './NaviBar'
-import LogOutButton from "./LogOutButton";
 import "./Footer.css"
 
 function Footer(){
@@ -26,7 +23,6 @@ function Footer(){
     return(
         <footer>
         <button className ="NaviBarButton" onClick={toggleNaviBar}>
-          <img className ="UIIcons" id="NaviBarIcon" src={NaviBarIcon} alt="NaviBar" />
         </button>
         {isNaviBarOpen && <NaviBar handleClick={handleNaviBarClick} />}
         {activeElement === 'MyFeed' && (
@@ -38,17 +34,15 @@ function Footer(){
         {activeElement === 'Setting' && (
           <Setting />
         )}
-        {activeElement === 'Logout' && (
-          <LogOutButton />
-        )}
         {activeElement === 'MyFeed' || activeElement === 'MyProfile' ? (
           <button className ="PostButton" onClick={togglePostForm}>
-            <img className ="UIIcons" id="PostFormIcon" src={PostFormIcon} alt="PostForm" />
+          <span class="plus-sign">+</span>
           </button>
         ) : null}
         {activeElement === 'MyFeed' || activeElement === 'MyProfile' ? (
           isPostFormOpen && <PostForm />
         ) : null}
+
       </footer>
     );
 }
