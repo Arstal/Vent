@@ -28,8 +28,13 @@ form .con {
     padding: 14.5px 0px 15px 9px;
     border-radius: 5px 0px 0px 5px;
 }
-
+.title {
+    text-align: center;
+}
 input[class="form-input"]{
+    display: flex;
+    align-items: center;
+
     width: 240px;
     height: 50px;
     margin-top: 2%;

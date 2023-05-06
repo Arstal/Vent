@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './MyFeed.css';
 function MyFeed() {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("No");
   const [postContent, setPostContent] = useState("Post Goes Here");
   const [likeCount, setLikeCount] = useState(0);
   const [dislikeCount, setDislikeCount] = useState(0);
@@ -13,7 +13,8 @@ function MyFeed() {
         //change dictionary name to match flask
         setPostContent(data.postContent);
         setLikeCount(data.likeCount);
-        setDislikeCount(data.setDislikeCount);
+        setDislikeCount(data.dislikeCount);
+        setUsername(data.username);
     });
   };
   useEffect(() => {
@@ -50,8 +51,10 @@ function MyFeed() {
     //change dictionary name to match flask
     <div className='MyFeed'>
       <button className = "like" onClick={handleLikeClick}>{likeCount}</button>
+      <div className='follow'>
       <h3>{username}</h3>
-      <button className= "follow" onclick={handleFollow}>Follow</button>
+      <button onclick={handleFollow}>Follow</button>
+      </div>
       <h2 className='feed'>{postContent}</h2>
       <button className = "dislike" onClick={handleDislikeClick}>{dislikeCount}</button>
     </div>

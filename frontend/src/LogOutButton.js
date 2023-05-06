@@ -5,7 +5,7 @@ function LogOutButton(){
     const [loggedOut, setLoggedOut] = useState(false);
     
     const handleLogout = () => {
-        fetch("/logout")
+        fetch("/api")
             .then((res) => res.json())
             .then((data) => {
                 if(data.success) {

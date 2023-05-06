@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
+
 function PostForm() {
     const [content, setContent] = useState('');
     const handleSubmit = (event) => {
         event.preventDefault();
         const url = '/Post';
-        const data = {content};
+        const data = content;
         fetch(url, {
             method: 'POST',
             body: JSON.stringify(data),
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         })
             .then((response) => response.json())
             .then((data) => {
@@ -17,7 +18,6 @@ function PostForm() {
             .catch((error) => console.error('Error submitting', error));
     };
     return (
-        <div className="form-container">
         <form onSubmit={handleSubmit}>
             <input
                 className="form-input"
@@ -27,9 +27,8 @@ function PostForm() {
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
             />
-            <button type="submit">Post</button>
+            <button type="submit">Vent</button>
         </form>
-        </div>
-    );
+    )
 }
 export default PostForm;

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-
+import "./MyProfile.css"
 function MyProfile() {
   const [posts, setPosts] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const [follower, setFollower] = useState([]);
 
   useEffect(() => {
     fetch('/profile/posts')
@@ -10,11 +12,13 @@ function MyProfile() {
         // Convert the response data to an array of posts
         const postsArray = Object.values(data).map(post => post);
         setPosts(postsArray);
+        setFollowing(data.following);
+        setFollower(data.follower);
       })
       .catch(error => console.error(error));
   }, []);
 
-
+  
 
   const handleDelete = (postId) => {
     fetch('/profile/post/delete', {
@@ -33,6 +37,7 @@ function MyProfile() {
   return (
     <div className="posts-container">
       <h1>My Posts</h1>
+      <h2>Following: {following} | follower: {follower}</h2>
       {posts.map(post => (
         <div className ="post" key={post.id}>
           <h4>{post.content}</h4>

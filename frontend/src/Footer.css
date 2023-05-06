@@ -1,27 +1,52 @@
 .NaviBarButton {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 10px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    width: 20vw;
-    height: 20vw;
-    max-width: 75px;
-    max-height: 75px;
-  }
-  
-  .PostButton {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin: 10px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    width: 20vw;
-    height: 20vw;
-    max-width: 75px;
-    max-height: 75px;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  width: 20vw;
+  height: 20vw;
+  max-width: 75px;
+  max-height: 75px; 
+  z-index: 999;
+}
+
+.NaviBarButton::before,
+.NaviBarButton::after {
+  content: "";
+  display: block;
+  height: 6px;
+  width: 35px;
+  background-color: #574c99;
+  margin: 6px 0;
+}
+
+.NaviBarButton::before {
+  transform: translateY(1px);
+}
+
+.NaviBarButton::after {
+  transform: translateY(1px);
+}
+
+
+.PostButton {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+.plus-sign {
+  font-size: 50px;
+  color: #574c99;
+}

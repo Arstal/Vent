@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import Login from './Login';
+import ReactDOM from 'react-dom';
 
 function SignUp(props) {
   const [username, setUsername] = useState('');
@@ -24,10 +24,9 @@ function SignUp(props) {
       })
       .then(data => {
         // Handle successful signup
-        if(data["signedup"] = true){
+        if(data["signedUp"] == true){
           ReactDOM.render(<Login />, document.getElementById('root'));
         }
-        
       })
       .catch(error => {
         // Handle failed signup

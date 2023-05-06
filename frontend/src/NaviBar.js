@@ -21,7 +21,7 @@ function NaviBar(props) {
       <li><a href="#"  onClick={() => handleClick('MyFeed')}>Feed</a></li>
           <li><a href="#" onClick={() => handleClick('MyProfile')}>Profile</a></li>
           <li><a href="#" onClick={() => handleClick('Setting')}>Setting</a></li>
-          <li><a href="#" onClick={handleLogout}>Logout</a></li>
+          <li><a href="#" className="logout" onClick={handleLogout}>Logout</a></li>
       </ul>
     </nav>
     </aside>

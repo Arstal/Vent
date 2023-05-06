@@ -207,11 +207,9 @@ def dislike():
 @app.route('/follow', methods=['PUT'])
 @login_required
 def follow():
-    if request.methods == "PUT":
-
+    if request.method == "PUT":
         postid = session.get("postNumber")
-
-        actualpost = UserPost.query.filter_by(id = int(postid)).first()
+        actualpost = UserPost.query.filter_by(id=int(postid)).first()
 
         info = session.get("user")
         userid = info["id"]
@@ -220,10 +218,9 @@ def follow():
         db.session.add(newfollow)
         db.session.commit()
 
-        followedusername = User.query.filter_by(id = int(actualpost)).first()
+        followeduser = User.query.filter_by(id=int(actualpost.user_id)).first()
 
-        return {"setUsername" : followedusername.user_id}
-    
+        return {"setUsername": followeduser.name}
 
 
 @app.route('/Post', methods=['POST'] )
@@ -261,13 +258,6 @@ def Profile():
 
     print(posts)
 
-    for post in posts:
-        if(post.user_id == 2):
-            allPost = {"id" : post.id, "content" : post.post_str, "likes" : post.post_like, "dislikes" : post.post_dislike}
-            listPost.append(allPost)
-
-    print(listPost)
-
     followers = 0
     following = 0
     people = Following.query.all()
@@ -276,6 +266,15 @@ def Profile():
             following = following + 1
         if(person.user2 == id):
             followers = followers + 1
+
+    for post in posts:
+        if(post.user_id == id):
+            allPost = {"id" : post.id, "content" : post.post_str, "likes" : post.post_like, "dislikes" : post.post_dislike,
+                        "following" : following, "follower" : followers}
+            listPost.append(allPost)
+
+    print(listPost)
+
 
     return jsonify(listPost)
 
@@ -329,8 +328,12 @@ def MyFeed():
 
     session["postNumber"] = chosenPost.id
 
+    uname = User.query.filter_by(id =post[postid].user_id ).first()
+    
 
-    return{"postContent" : post[postid].post_str, "likeCount" : post[postid].post_like, "setDislikeCount" : post[postid].post_dislike}
+
+    return{"postContent" : post[postid].post_str, "likeCount" : post[postid].post_like, "dislikeCount" : post[postid].post_dislike,
+            "username" : uname.name}
 
 if __name__ == "__main__":
     with app.app_context():
