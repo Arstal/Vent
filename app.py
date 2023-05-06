@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, request, redirect, url_for, render_template, session,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -16,17 +17,35 @@ app.debug=True
 
 db = SQLAlchemy(app)
 
+
+class Following(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    User1 = db.Column(db.String(50))
+    user2 = db.Column(db.String(50))
+
+    def init(self, user1, user2):
+        self.User1 = user1 
+        self.User2 = user2
+
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(255))
+    password_hash = db.Column(db.String(128))
     posts = db.relationship('UserPost', backref='author', lazy=True)
 
-    def __init__(self,Name,Email,Password):
-        self.name = Name
-        self.email = Email
-        self.password= Password
+    def __init__(self, name, email, password):
+        self.name = name
+        self.email = email
+        self.set_password(password)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
 class UserPost(db.Model):
@@ -74,7 +93,7 @@ def index():
     return render_template("index.html")
 #-------------------------------------------------
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         auth = request.get_json()
@@ -83,13 +102,12 @@ def login():
 
         user = User.query.filter_by(email=email).first()
 
-        if user is not None and user.password == password:
+        if user is not None and user.check_password(password):
             login_user(user)
             session['email'] = user.email
             session["loggedin"] = True
             session["user"] = {'id': user.id, 'name': user.name}
             return {"code": "12345"}
-            # return flask.redirect(flask.url_for('home'))
         print("yea this didnt work")
         return 'Bad login'
 
@@ -112,21 +130,25 @@ def home():
 #: Login, logout, session token(maybe),
 # new post upload, like/dislike (onclick return a new post to populate the <h2>, GET all post from self.
 
-@app.route('/signup', methods=['POST'] )
-@login_required
+@app.route('/signup', methods=['POST'])
 def signup():
-
     if request.method == 'POST':
-        info= request.get_json()
+        info = request.get_json()
         user = info["username"]
         password = info["password"]
-        email = info["email"]
+        email = info["email"].lower() # Convert the email to lowercase
 
-        new_user = User(user,email,password)
+        # check if user with the same email already exists
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            return {"error": "User with this email already exists"}
+
+        new_user = User(user, email, password)
         db.session.add(new_user)
         db.session.commit()
 
-    return {"signedUp" : True }
+    return {"signedUp": True}
+
 
 @app.route('/like', methods=['PUT'] )
 @login_required
@@ -180,6 +202,27 @@ def dislike():
 
         return{"setDislikeCount" : post.post_dislike}
     
+
+
+@app.route('/follow', methods=['PUT'])
+@login_required
+def follow():
+    if request.methods == "PUT":
+
+        postid = session.get("postNumber")
+
+        actualpost = UserPost.query.filter_by(id = int(postid)).first()
+
+        info = session.get("user")
+        userid = info["id"]
+
+        newfollow = Following(userid, actualpost.user_id)
+        db.session.add(newfollow)
+        db.session.commit()
+
+        followedusername = User.query.filter_by(id = int(actualpost)).first()
+
+        return {"setUsername" : followedusername.user_id}
     
 
 
@@ -225,6 +268,15 @@ def Profile():
 
     print(listPost)
 
+    followers = 0
+    following = 0
+    people = Following.query.all()
+    for person in people:
+        if(person.User1 == id):
+            following = following + 1
+        if(person.user2 == id):
+            followers = followers + 1
+
     return jsonify(listPost)
 
 
@@ -259,6 +311,7 @@ def settings(postId):
         user.password = newpassword
         db.session.commit()
         return {}
+    
 
 @app.route('/MyFeed')
 @login_required
@@ -281,12 +334,12 @@ def MyFeed():
 
 if __name__ == "__main__":
     with app.app_context():
-        # new_user = User(name="test2", email="test", password="1")
+        # new_user = User(name="test2", email="testers", password="josh")
         # db.session.add(new_user)
         # db.session.commit()
 
         db.create_all()
-        # new_user = User(name="test", email="test@gmail.com", password="12345")
+        # new_user = User(name="roy", email="roychill@gmail.com", password=generate_password_hash('roychill'))
         # db.session.add(new_user)
         # db.session.commit()
     app.run(debug =True)
